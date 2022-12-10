@@ -1,0 +1,140 @@
+void matmulijkLoopUnrolling(double * input1,double * input2,double * output){
+    for(int i=0;i<SIZE;i++) //ijk
+        for(int j=0;j+3<SIZE;j++){
+                for (int k=0; k+15 < SIZE; k+=16) {
+                        output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+1]*input2[(k+1)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+2]*input2[(k+2)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+3]*input2[(k+3)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+4]*input2[(k+4)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+5]*input2[(k+5)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+6]*input2[(k+6)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+7]*input2[(k+7)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+8]*input2[(k+8)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+9]*input2[(k+9)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+10]*input2[(k+10)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+11]*input2[(k+11)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+12]*input2[(k+12)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+13]*input2[(k+13)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+14]*input2[(k+14)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+15]*input2[(k+15)*SIZE+i];
+                }
+                j++;
+                for (int k=0; k+15 < SIZE; k+=16) {
+ 
+                        output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+1]*input2[(k+1)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+2]*input2[(k+2)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+3]*input2[(k+3)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+4]*input2[(k+4)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+5]*input2[(k+5)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+6]*input2[(k+6)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+7]*input2[(k+7)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+8]*input2[(k+8)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+9]*input2[(k+9)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+10]*input2[(k+10)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+11]*input2[(k+11)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+12]*input2[(k+12)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+13]*input2[(k+13)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+14]*input2[(k+14)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+15]*input2[(k+15)*SIZE+i];
+                }
+                j++;
+                for (int k=0; k+15 < SIZE; k+=16) {
+                        output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+1]*input2[(k+1)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+2]*input2[(k+2)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+3]*input2[(k+3)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+4]*input2[(k+4)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+5]*input2[(k+5)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+6]*input2[(k+6)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+7]*input2[(k+7)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+8]*input2[(k+8)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+9]*input2[(k+9)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+10]*input2[(k+10)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+11]*input2[(k+11)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+12]*input2[(k+12)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+13]*input2[(k+13)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+14]*input2[(k+14)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+15]*input2[(k+15)*SIZE+i];
+                }
+                j++;
+                for (int k=0; k+15 < SIZE; k+=16) {
+                        output[j+1*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+1]*input2[(k+1)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+2]*input2[(k+2)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+3]*input2[(k+3)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+4]*input2[(k+4)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+5]*input2[(k+5)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+6]*input2[(k+6)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+7]*input2[(k+7)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+8]*input2[(k+8)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+9]*input2[(k+9)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+10]*input2[(k+10)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+11]*input2[(k+11)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+12]*input2[(k+12)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+13]*input2[(k+13)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+14]*input2[(k+14)*SIZE+i];
+                        output[j*SIZE+i]+=input1[j*SIZE+k+15]*input2[(k+15)*SIZE+i];
+                }
+        }
+}
+128
+ 0.335091 2088960000 6234
+ 0.340277 2088960000 6139
+ 0.386058 2088960000 5411
+ 0.383929 2088960000 5441
+ 0.395861 2088960000 5277
+ 0.393179 2088960000 5313
+ 0.394292 2088960000 5298
+ 0.395113 2088960000 5287
+ 0.396839 2088960000 5264
+ 0.397367 2088960000 5257
+ 
+256
+ 0.272800 3348889600 12276
+ 0.285206 3348889600 11742
+ 0.275742 3348889600 12145
+ 0.274409 3348889600 12204
+ 0.286646 3348889600 11683
+ 0.272556 3348889600 12287
+ 0.283228 3348889600 11824
+ 0.273915 3348889600 12226
+ 0.273379 3348889600 12250
+ 0.271737 3348889600 12324
+ 
+512
+ 0.261556 2681733120 10253
+ 0.260869 2681733120 10280
+ 0.273507 2681733120 9805
+ 0.260818 2681733120 10282
+ 0.261479 2681733120 10256
+ 0.271761 2681733120 9868 
+ 0.261939 2681733120 10238
+ 0.260818 2681733120 10282
+ 0.262401 2681733120 10220
+ 0.261174 2681733120 10268
+ 
+1024
+ 0.233766 2146435072 9182
+ 0.243692 2146435072 8808
+ 0.233562 2146435072 9190
+ 0.243470 2146435072 8816
+ 0.235123 2146435072 9129
+ 0.233587 2146435072 9189
+ 0.234225 2146435072 9164
+ 0.234994 2146435072 9134
+ 0.233587 2146435072 9189
+ 0.244302 2146435072 8786
+ 
+2048
+ 0.216215 17175674880 79438
+ 0.217458 17175674880 78984
+ 0.218143 17175674880 78736
+ 0.218273 17175674880 78689
+ 0.217965 17175674880 78800
+ 0.218004 17175674880 78786
+ 0.217874 17175674880 78833
+ 0.218029 17175674880 78777
+ 0.217092 17175674880 79117
+
