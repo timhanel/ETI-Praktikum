@@ -1,5 +1,4 @@
 void matmuljik(double * input1,double * input2,double * output){
-                #pragma omp tile sizes(64,64,8)
                 for(int j=0;j<SIZE;++j){      //jik
                 for(int i=0;i<SIZE;++i){
                         for(int k=0;k<SIZE;++k){
