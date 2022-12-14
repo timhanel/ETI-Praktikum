@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="taurus.hrsk.tu-dresden.de" id="2a131332-4599-4239-83a0-fdb97aad9adf" port="22" nameFormat="DESCRIPTIVE" username="s2631336" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

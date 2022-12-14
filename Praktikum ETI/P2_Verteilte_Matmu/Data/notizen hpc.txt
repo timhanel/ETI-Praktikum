@@ -1,0 +1,1 @@
+salloc -p haswell -n 1 -c 1 -t 01:00:00 --reservation=p_lv_eti2223_798 -A p_lv_eti2223 --exclusive

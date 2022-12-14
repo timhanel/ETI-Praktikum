@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="b54cdd9d-1a4d-4c96-b09f-0ddf01bd8fe6" name="taurus">
+        <fileTransfer rootFolder="/home/s2631336" accessType="SFTP" host="taurus.hrsk.tu-dresden.de" port="22" sshConfigId="2a131332-4599-4239-83a0-fdb97aad9adf" sshConfig="s2631336@taurus.hrsk.tu-dresden.de:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
