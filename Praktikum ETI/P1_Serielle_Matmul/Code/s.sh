@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 gcc -o task1 task1_.c
 chmod +x s.sh
 size=(128 256 512 1024 2048)
