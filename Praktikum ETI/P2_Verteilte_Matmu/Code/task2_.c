@@ -9,12 +9,11 @@
 #include <inttypes.h>
 int loopsize=0;
 int SIZE=0;
-void init(double * input1,double * input2){
+void init(double * input1){
     srand( time(NULL) );
     for(int i=0;i<SIZE;i++){
         for(int j=0;j<SIZE;j++){
                 input1[i*SIZE+j]=(double)rand();
-                input2[i*SIZE+j]=(double)rand();
         }
     }
 }
@@ -185,7 +184,8 @@ int main(int argc, char *argv[]){
     double res=0;
 
     long long ops=0;
-    init(input1,input2);
+    init(input1);
+    init(input2);
 
     struct timeval time;
     gettimeofday(&time,NULL);
