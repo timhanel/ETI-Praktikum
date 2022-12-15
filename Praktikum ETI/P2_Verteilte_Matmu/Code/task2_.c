@@ -11,6 +11,7 @@
 #include <mpi.h>
 
 int SIZE = 0;
+int rank, size;
 
 void init(double *input1, unsigned long in1_len_xy) {
     srand(time(NULL));
@@ -183,10 +184,17 @@ int main(int argc, char *argv[]) {
         return 1;
     };
 
-    int rank, size;
     MPI_Init(&argc,&argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_rank(MPI_COMM_WORLD, &size);
+
+    if(size%2 && size>1){
+        if(rank==0){
+            printf("Number of processes should be dividable by 2!!");
+        }
+        MPI_Finalize();
+        return 1;
+    }
 
     //build out file name
     char *l = argv[1];
