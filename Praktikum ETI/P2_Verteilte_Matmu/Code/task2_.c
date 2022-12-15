@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <string.h>
 
 int SIZE = 0;
 
@@ -172,12 +173,24 @@ void matmulkji(const double *input1, const double *input2, double *output) {
     }
 }
 
+
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         printf("args1: MatrixSize, args2: LoopSize");
         printf("%d", argc);
         return 1;
     };
+    //build out file name
+    char *out = argv[0];
+    unsigned long testlen = strlen(out)-1;
+    while(testlen>0 && !(out[testlen]=='/' || out[testlen]=='\\')){
+        testlen--;
+    }
+
+    char *outpath = malloc(testlen*sizeof(char));
+    strncpy(outpath,out,testlen);
+
     char *l = argv[1];
     char *d = argv[2];
     unsigned long loopsize = atoll(d);
@@ -187,17 +200,19 @@ int main(int argc, char *argv[]) {
     double *input1 = malloc((SIZE * SIZE) * sizeof(double));
     double *input2 = malloc((SIZE * SIZE) * sizeof(double));
     double *output = malloc((SIZE * SIZE) * sizeof(double));
-    double res = 0;
 
-    long long ops = 0;
     init(input1, SIZE * SIZE);
     init(input2, SIZE * SIZE);
+
+    double res = 0;
+    long long ops = 0;
 
     struct timeval time;
     gettimeofday(&time, NULL);
 
     long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
     for (unsigned long a = 0; a < loopsize; a++) {
+        //TODO: install switch for function versions
         matmulijk(input1, input2, output);
         //matmulSchleifenvertauschjki(input1,input2,output);
         //matmulijkTiling(input1,input2,output);
@@ -221,8 +236,11 @@ int main(int argc, char *argv[]) {
     printf(" %lld", ops);//Count of Operations
     printf(" %lld", t);//TimeInMilliseconds
     printf(" \n");
+
+
     free(input1);
     free(input2);
     free(output);
+    free(outpath);
     return 0;
 }
