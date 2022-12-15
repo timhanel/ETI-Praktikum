@@ -176,25 +176,18 @@ void matmulkji(const double *input1, const double *input2, double *output) {
 
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
+    if (argc != 4) {
         printf("args1: MatrixSize, args2: LoopSize");
         printf("%d", argc);
         return 1;
     };
     //build out file name
-    char *out = argv[0];
-    unsigned long testlen = strlen(out)-1;
-    while(testlen>0 && !(out[testlen]=='/' || out[testlen]=='\\')){
-        testlen--;
-    }
-
-    char *outpath = malloc(testlen*sizeof(char));
-    strncpy(outpath,out,testlen);
-
     char *l = argv[1];
     char *d = argv[2];
+    char *f = argv[3];
     unsigned long loopsize = atoll(d);
     SIZE = atoi(l);
+    unsigned long funcnum = atoll(f);
     //printf("%lld",SIZE);
     //printf("%lld",loopsize);
     double *input1 = malloc((SIZE * SIZE) * sizeof(double));
@@ -213,12 +206,12 @@ int main(int argc, char *argv[]) {
     long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
     for (unsigned long a = 0; a < loopsize; a++) {
         //TODO: install switch for function versions
-        matmulijk(input1, input2, output);
-        //matmulSchleifenvertauschjki(input1,input2,output);
-        //matmulijkTiling(input1,input2,output);
-        //matmulijkWOUnroll(input1,input2,output);
-        //matmulijkWTemporary(input1,input2,output);
-
+        switch (funcnum) {
+            case 0: matmulijk(input1, input2, output); break;
+            case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
+            case 2: matmulijkTiling(input1,input2,output); break;
+            default: matmulijkWTemporary(input1,input2,output); break;
+        }
     }
 
     gettimeofday(&time, NULL);
@@ -241,6 +234,5 @@ int main(int argc, char *argv[]) {
     free(input1);
     free(input2);
     free(output);
-    free(outpath);
     return 0;
 }
