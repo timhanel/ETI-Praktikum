@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <string.h>
+#include <mpi.h>
 
 int SIZE = 0;
 
@@ -181,6 +182,12 @@ int main(int argc, char *argv[]) {
         printf("%d", argc);
         return 1;
     };
+
+    int rank, size;
+    MPI_Init(&argc,&argv);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_rank(MPI_COMM_WORLD, &size);
+
     //build out file name
     char *l = argv[1];
     char *d = argv[2];
@@ -233,5 +240,6 @@ int main(int argc, char *argv[]) {
     free(input1);
     free(input2);
     free(output);
+    MPI_Finalize();
     return 0;
 }
