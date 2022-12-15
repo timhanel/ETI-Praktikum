@@ -188,14 +188,6 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_rank(MPI_COMM_WORLD, &size);
 
-    if(size%2 && size>1){
-        if(rank==0){
-            printf("Number of processes should be dividable by 2!!");
-        }
-        MPI_Finalize();
-        return 1;
-    }
-
     //build out file name
     char *l = argv[1];
     char *d = argv[2];
@@ -203,6 +195,15 @@ int main(int argc, char *argv[]) {
     unsigned long loopsize = atoll(d);
     SIZE = atoi(l);
     unsigned long funcnum = atoll(f);
+
+    if(SIZE%size!=0 && size>1){
+        if(rank==0){
+            printf("Number of processes should be evenly dividable by the size to be tested!!");
+        }
+        MPI_Finalize();
+        return 1;
+    }
+
     //printf("%lld",SIZE);
     //printf("%lld",loopsize);
     double *input1 = malloc((SIZE * SIZE) * sizeof(double));
