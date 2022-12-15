@@ -3,7 +3,7 @@ mpicc -o task2 task2_.c
 chmod +x s.sh
 funcname=("matmulijk" "matmulSchleifenvertauschjki" "matmulijkTiling" "matmulijkWTemporary")
 size=(128 256 512 1024 2048)
-loop=(500 100 20 1 1)
+loop=(1 1 1 1 1)
 
 for f in 0 1 2 3
 do
