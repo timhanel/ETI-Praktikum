@@ -7,23 +7,21 @@
 #include <pthread.h>
 #include <stdint.h>
 #include <inttypes.h>
-int loopsize=0;
+
 int SIZE=0;
-void init(double * input1){
+void init(double * input1,unsigned long in1_len_xy){
     srand( time(NULL) );
-    for(int i=0;i<SIZE;i++){
-        for(int j=0;j<SIZE;j++){
-                input1[i*SIZE+j]=(double)rand();
-        }
+    for(int i=0;i<in1_len_xy;i++){
+        input1[i]=(double)rand();
     }
 }
 void matmulikj(double * input1,double * input2,double * output){
 
-        for(int i=0;i<SIZE;i++){ //ikj
+    for(int i=0;i<SIZE;i++){ //ikj
         for(int k=0;k<SIZE;k++){
             for(int j=0;j<SIZE;j++){
-                    output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
-                }
+                output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+            }
         }
     }
 }
@@ -51,7 +49,6 @@ void matmulijkLoopUnrolling(double * input1,double * input2,double * output){
                 }
                 j++;
                 for (int k=0; k+15 < SIZE; k+=16) {
- 
                         output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
                         output[j*SIZE+i]+=input1[j*SIZE+k+1]*input2[(k+1)*SIZE+i];
                         output[j*SIZE+i]+=input1[j*SIZE+k+2]*input2[(k+2)*SIZE+i];
@@ -123,9 +120,9 @@ void matmulijkTiling(double * input1,double * input2,double * output){
 void matmulijk(double * input1,double * input2,double * output){
         for(int i=0;i<SIZE;i++){ //kij
                 for(int j=0;j<SIZE;j++){
-                for(int k=0;k<SIZE;k++){
-                            output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
-                        }
+                    for(int k=0;k<SIZE;k++){
+                        output[j*SIZE+i]+=input1[j*SIZE+k]*input2[k*SIZE+i];
+                    }
                 }
         }
 }
@@ -174,7 +171,7 @@ int main(int argc, char *argv[]){
     if(argc!=3){printf("args1: MatrixSize, args2: LoopSize");printf("%d",argc);return 1;};
     char *l =argv[1];
     char *d =argv[2];
-    loopsize=atoi(d);
+    unsigned long loopsize=atoll(d);
     SIZE=atoi(l);
     //printf("%lld",SIZE);
     //printf("%lld",loopsize);
@@ -184,14 +181,14 @@ int main(int argc, char *argv[]){
     double res=0;
 
     long long ops=0;
-    init(input1);
-    init(input2);
+    init(input1,SIZE*SIZE);
+    init(input2,SIZE*SIZE);
 
     struct timeval time;
     gettimeofday(&time,NULL);
 
     long long millis = (time.tv_sec * (long long)1000) + (time.tv_usec / 1000);
-    for(int a=0;a<loopsize;a++){
+    for(unsigned long a=0;a<loopsize;a++){
         matmulijk(input1,input2,output);
         //matmulSchleifenvertauschjki(input1,input2,output);
         //matmulijkTiling(input1,input2,output);
