@@ -205,7 +205,6 @@ int main(int argc, char *argv[]) {
 
     long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
     for (unsigned long a = 0; a < loopsize; a++) {
-        //TODO: install switch for function versions
         switch (funcnum) {
             case 0: matmulijk(input1, input2, output); break;
             case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
