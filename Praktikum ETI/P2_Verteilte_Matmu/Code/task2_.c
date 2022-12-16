@@ -240,7 +240,6 @@ int main(int argc, char *argv[]) {
         MPI_Barrier(MPI_COMM_WORLD);
         long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
         for (unsigned long a = 0; a < loopsize; a++) {
-            MPI_Barrier(MPI_COMM_WORLD);
             switch (funcnum) {
                 case 0: matmulijk(input1, input2, output); break;
                 case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
@@ -268,7 +267,6 @@ int main(int argc, char *argv[]) {
     else{
         MPI_Barrier(MPI_COMM_WORLD);
         for (unsigned long a = 0; a < loopsize; a++) {
-            MPI_Barrier(MPI_COMM_WORLD);
             switch (funcnum) {
                 case 0: matmulijk(input1, input2, output); break;
                 case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
