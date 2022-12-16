@@ -29,17 +29,18 @@ void init(double *input1) {
 }
 
 void matmulikj(const double *input1, const double *input2, double *output) {
-    for (int i = 0; i < SIZE; i++) { //ikj
+    for (int i = rank*(SIZE/size); i < (rank+1)*(SIZE/size); i++) { //ikj
         for (int k = 0; k < SIZE; k++) {
             for (int j = 0; j < SIZE; j++) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmulijkLoopUnrolling(const double *input1, const double *input2, double *output) {
-    for (int i = 0; i < SIZE; i++) //ijk
+    for (int i = rank*(SIZE/size); i < (rank+1)*(SIZE/size); i++) //ijk
         for (int j = 0; j + 3 < SIZE; j++) {
             for (int k = 0; k + 15 < SIZE; k += 16) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
@@ -117,17 +118,18 @@ void matmulijkLoopUnrolling(const double *input1, const double *input2, double *
                 output[j * SIZE + i] += input1[j * SIZE + k + 15] * input2[(k + 15) * SIZE + i];
             }
         }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmulijkTiling(const double *input1, const double *input2, double *output) {
-    for (int i = 0; i < SIZE; i += 8)
+    for (int i = rank*(SIZE/size); i < (rank+1)*(SIZE/size); i+=8)
         for (int j = 0; j < SIZE; j += 8)
             for (int k = 0; k < SIZE; k += 8)
                 for (int i2 = i; i2 < i + 8; i2 += 1)
                     for (int j2 = j; j2 < j + 8; j2 += 1)
                         for (int k2 = k; k2 < k + 8; k2 += 1)
                             output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
-
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 //Baseline
@@ -143,17 +145,18 @@ void matmulijk(const double *input1, const double *input2, double *output) {
 }
 
 void matmulSchleifenvertauschjki(const double *input1, const double *input2, double *output) {
-    for (int j = 0; j < SIZE; j++) {                //jki
+    for (int j = rank*(SIZE/size); j < (rank+1)*(SIZE/size); j++) {                //jki
         for (int k = 0; k < SIZE; k++) {
             for (int i = 0; i < SIZE; i++) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmulijkWTemporary(const double *input1, const double *input2, double *output) {
-    for (int i = 0; i < SIZE; i++) { //kij
+    for (int i = rank*(SIZE/size); i < (rank+1)*(SIZE/size); i++) { //kij
         for (int j = 0; j < SIZE; j++) {
             double d = 0;
             for (int k = 0; k < SIZE; k++) {
@@ -162,29 +165,30 @@ void matmulijkWTemporary(const double *input1, const double *input2, double *out
             output[j * SIZE + i] = d;
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmuljik(const double *input1, const double *input2, double *output) {
-    for (int j = 0; j < SIZE; j++) {        //jik
+    for (int j = rank*(SIZE/size); j < (rank+1)*(SIZE/size); j++) {        //jik
         for (int i = 0; i < SIZE; i++) {
             for (int k = 0; k < SIZE; k++) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmulkji(const double *input1, const double *input2, double *output) {
-    for (int k = 0; k < SIZE; k++) {
+    for (int k = rank*(SIZE/size); k < (rank+1)*(SIZE/size); k++) {
         for (int j = 0; j < SIZE; j++) {                //kji
             for (int i = 0; i < SIZE; i++) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
-
-
 
 int main(int argc, char *argv[]) {
     MPI_Init(&argc,&argv);
