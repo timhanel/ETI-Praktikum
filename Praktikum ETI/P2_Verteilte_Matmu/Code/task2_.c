@@ -225,6 +225,10 @@ int main(int argc, char *argv[]) {
     init(input1);
     init(input2);
 
+    for(unsigned long i=0;i<SIZE*SIZE;i++){
+        output[i]=(double)0;//random bytes interpreted as double can cause segmentation fault by randomly showing infinity
+    }
+
     if(rank==0){
         double res = 0;
         long long ops = 0;
@@ -232,6 +236,7 @@ int main(int argc, char *argv[]) {
         struct timeval time;
         gettimeofday(&time, NULL);
 
+        MPI_Barrier(MPI_COMM_WORLD);
         long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
         for (unsigned long a = 0; a < loopsize; a++) {
             MPI_Barrier(MPI_COMM_WORLD);
@@ -260,6 +265,7 @@ int main(int argc, char *argv[]) {
         printf(" \n");
     }
     else{
+        MPI_Barrier(MPI_COMM_WORLD);
         for (unsigned long a = 0; a < loopsize; a++) {
             MPI_Barrier(MPI_COMM_WORLD);
             switch (funcnum) {
