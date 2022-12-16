@@ -1,2 +1,3 @@
 salloc -p haswell -n 1 -c 1 -t 01:00:00 --reservation=p_lv_eti2223_798 -A p_lv_eti2223 --exclusive
 salloc -p haswell --nodes=2 --tasks-per-node=24 -t 03:00:00 -A p_lv_eti2223 --exclusive
+srun -n $NR_MPI_PROCESSES -t 00:20:00 --ntasks=48 --mem-per-cpu=1700 --cpus-per-task=2 -A -A p_lv_eti2223 --exclusive

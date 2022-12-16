@@ -18,7 +18,7 @@ echo $d>>output_${nameing}.txt
 echo $d
 for i in 1 2 3 4 5 6 7 8 9 10
 do
-./task2 $d $l $f>>output_${nameing}.txt
+srun -n $NR_MPI_PROCESSES -t 00:20:00 --ntasks=48 --mem-per-cpu=1700 --cpus-per-task=2 -A -A p_lv_eti2223 --exclusive ./task2 $d $l $f>>output_${nameing}.txt
 done
 done
 done
