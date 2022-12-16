@@ -191,8 +191,10 @@ int main(int argc, char *argv[]) {
     MPI_Comm_rank(MPI_COMM_WORLD, &size);
 
     if (argc != 4) {
-        printf("args1: MatrixSize, args2: LoopSize");
-        printf("%d", argc);
+        if(rank == 0){
+            printf("args1: MatrixSize, args2: LoopSize");
+            printf("%d", argc);
+        }
         MPI_Finalize();
         return 1;
     };
@@ -211,8 +213,10 @@ int main(int argc, char *argv[]) {
 
     unsigned long rest_el=SIZE%size;
     if(rest_el){
-        printf("Number of ranks did not evenly divide problem size! Aborting!");
-        printf(" \n");
+        if(rank==0){
+            printf("Number of ranks did not evenly divide problem size! Aborting!");
+            printf(" \n");
+        }
         MPI_Finalize();
         return 1;
     }
@@ -221,38 +225,51 @@ int main(int argc, char *argv[]) {
     init(input1);
     init(input2);
 
-    double res = 0;
-    long long ops = 0;
+    if(rank==0){
+        double res = 0;
+        long long ops = 0;
 
-    struct timeval time;
-    gettimeofday(&time, NULL);
+        struct timeval time;
+        gettimeofday(&time, NULL);
 
-    long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
-    for (unsigned long a = 0; a < loopsize; a++) {
-        switch (funcnum) {
-            case 0: matmulijk(input1, input2, output); break;
-            case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
-            case 2: matmulijkTiling(input1,input2,output); break;
-            default: matmulijkWTemporary(input1,input2,output); break;
+        long long millis = (time.tv_sec * (long long) 1000) + (time.tv_usec / 1000);
+        for (unsigned long a = 0; a < loopsize; a++) {
+            MPI_Barrier(MPI_COMM_WORLD);
+            switch (funcnum) {
+                case 0: matmulijk(input1, input2, output); break;
+                case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
+                case 2: matmulijkTiling(input1,input2,output); break;
+                default: matmulijkWTemporary(input1,input2,output); break;
+            }
+        }
+
+        gettimeofday(&time, NULL);
+        long long t = ((time.tv_sec * (long long) 1000) + (time.tv_usec / 1000)) - millis;
+        //long long durationMilliseconds=neumillis-millis;
+
+        double a = SIZE * SIZE;
+        a *= (2 * SIZE);
+        a *= loopsize;
+        ops = a;
+        res = (double) a;
+        res /= t;
+        res /= (1000 * 1000);
+        printf(" %f", res);//GFLOPS
+        printf(" %lld", ops);//Count of Operations
+        printf(" %lld", t);//TimeInMilliseconds
+        printf(" \n");
+    }
+    else{
+        for (unsigned long a = 0; a < loopsize; a++) {
+            MPI_Barrier(MPI_COMM_WORLD);
+            switch (funcnum) {
+                case 0: matmulijk(input1, input2, output); break;
+                case 1: matmulSchleifenvertauschjki(input1,input2,output); break;
+                case 2: matmulijkTiling(input1,input2,output); break;
+                default: matmulijkWTemporary(input1,input2,output); break;
+            }
         }
     }
-
-    gettimeofday(&time, NULL);
-    long long t = ((time.tv_sec * (long long) 1000) + (time.tv_usec / 1000)) - millis;
-    //long long durationMilliseconds=neumillis-millis;
-
-    double a = SIZE * SIZE;
-    a *= (2 * SIZE);
-    a *= loopsize;
-    ops = a;
-    res = (double) a;
-    res /= t;
-    res /= (1000 * 1000);
-    printf(" %f", res);//GFLOPS
-    printf(" %lld", ops);//Count of Operations
-    printf(" %lld", t);//TimeInMilliseconds
-    printf(" \n");
-
 
     free(input1);
     free(input2);
