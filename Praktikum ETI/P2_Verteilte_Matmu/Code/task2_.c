@@ -132,13 +132,14 @@ void matmulijkTiling(const double *input1, const double *input2, double *output)
 
 //Baseline
 void matmulijk(const double *input1, const double *input2, double *output) {
-    for (int i = 0; i < SIZE; i++) { //kij
+    for (int i = rank*(SIZE/size); i < (rank+1)*(SIZE/size); i++) { //kij
         for (int j = 0; j < SIZE; j++) {
             for (int k = 0; k < SIZE; k++) {
                 output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
+    MPI_Allreduce(output,output,SIZE*SIZE,MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 }
 
 void matmulSchleifenvertauschjki(const double *input1, const double *input2, double *output) {
