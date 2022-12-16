@@ -10,20 +10,22 @@
 #include <string.h>
 #include <mpi.h>
 
+typedef struct unsigend unsigend;
 int SIZE = 0;
 int rank = 0, size = 0;
 unsigned long rank_load_size = 0;
 
 void init(double *input1) {
-    double* tmp=malloc((rank_load_size * rank_load_size) * sizeof(double));
+    double* tmp=malloc(rank_load_size * sizeof(double));
     srand(time(NULL));
-    for (int i = 0; i < rank_load_size * rank_load_size; i++) {
+    for (int i = 0; i < rank_load_size; i++) {
         tmp[i] = (double) rand();
     }
 
-    MPI_Gather(tmp,rank_load_size * rank_load_size,MPI_DOUBLE,input1,rank_load_size * rank_load_size,0,MPI_COMM_WORLD);
-
+    MPI_Gather(tmp,rank_load_size,MPI_DOUBLE,input1,rank_load_size,MPI_DOUBLE,0,MPI_COMM_WORLD);
     free(tmp);
+
+    MPI_Bcast(input1,SIZE*SIZE,MPI_DOUBLE,0,MPI_COMM_WORLD);
 }
 
 void matmulikj(const double *input1, const double *input2, double *output) {
@@ -203,27 +205,18 @@ int main(int argc, char *argv[]) {
     SIZE = atoi(l);
     unsigned long funcnum = atoll(f);
 
-    double *input1 = NULL;
-    double *input2 = NULL;
-    double *output = NULL;
+    double *input1 = malloc((SIZE * SIZE) * sizeof(double));
+    double *input2 = malloc((SIZE * SIZE) * sizeof(double));
+    double *output = malloc((SIZE * SIZE) * sizeof(double));
 
-    if(rank==size-1){
-        rank_load_size=SIZE/size+SIZE%size;//last rank fills up uneven load
+    unsigned long rest_el=SIZE%size;
+    if(rest_el){
+        printf("Number of ranks did not evenly divide problem size! Aborting!");
+        printf(" \n");
+        MPI_Finalize();
+        return 1;
     }
-    else{
-        rank_load_size=SIZE/size;//all ranks share load
-    }
-
-    if(rank == 0){
-        input1 = malloc((SIZE * SIZE) * sizeof(double));
-        input2 = malloc((SIZE * SIZE) * sizeof(double));
-        output = malloc((SIZE * SIZE) * sizeof(double));
-    }
-    else{
-        input1 = malloc((rank_load_size * rank_load_size) * sizeof(double));
-        input2 = malloc((rank_load_size * rank_load_size) * sizeof(double));
-        output = malloc((rank_load_size * rank_load_size) * sizeof(double));
-    }
+    rank_load_size=SIZE*SIZE/size;//all ranks share load
 
     init(input1);
     init(input2);
