@@ -11,7 +11,7 @@
 #include <mpi.h>
 
 int SIZE = 0;
-int rank, size;
+int rank = 0, size = 0;
 
 void init(double *input1, unsigned long in1_len_xy) {
     srand(time(NULL));
@@ -178,15 +178,16 @@ void matmulkji(const double *input1, const double *input2, double *output) {
 
 
 int main(int argc, char *argv[]) {
-    if (argc != 4) {
-        printf("args1: MatrixSize, args2: LoopSize");
-        printf("%d", argc);
-        return 1;
-    };
-
     MPI_Init(&argc,&argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_rank(MPI_COMM_WORLD, &size);
+
+    if (argc != 4) {
+        printf("args1: MatrixSize, args2: LoopSize");
+        printf("%d", argc);
+        MPI_Finalize();
+        return 1;
+    };
 
     //build out file name
     char *l = argv[1];
@@ -196,22 +197,20 @@ int main(int argc, char *argv[]) {
     SIZE = atoi(l);
     unsigned long funcnum = atoll(f);
 
-    if(SIZE%size!=0 && size>1){
-        if(rank==0){
-            printf("Number of processes should be evenly dividable by the size to be tested!!");
-        }
-        MPI_Finalize();
-        return 1;
-    }
-
     //printf("%lld",SIZE);
     //printf("%lld",loopsize);
-    double *input1 = malloc((SIZE * SIZE) * sizeof(double));
-    double *input2 = malloc((SIZE * SIZE) * sizeof(double));
-    double *output = malloc((SIZE * SIZE) * sizeof(double));
+    double *input1 = NULL;
+    double *input2 = NULL;
+    double *output = NULL;
 
-    init(input1, SIZE * SIZE);
-    init(input2, SIZE * SIZE);
+    if(rank == 0){
+        input1 = malloc((SIZE * SIZE) * sizeof(double));
+        input2 = malloc((SIZE * SIZE) * sizeof(double));
+        output = malloc((SIZE * SIZE) * sizeof(double));
+
+        init(input1, SIZE * SIZE);
+        init(input2, SIZE * SIZE);
+    }
 
     double res = 0;
     long long ops = 0;
