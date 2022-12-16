@@ -1,4 +1,5 @@
 #!/usr/bin/bash
+module load OpenMPI/4.1.1
 mpicc -o task2 task2_.c
 chmod +x s.sh
 funcname=("matmulijk" "matmulSchleifenvertauschjki" "matmulijkTiling" "matmulijkWTemporary")
