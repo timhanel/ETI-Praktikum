@@ -12,12 +12,18 @@
 
 int SIZE = 0;
 int rank = 0, size = 0;
+unsigned long rank_load_size = 0;
 
-void init(double *input1, unsigned long in1_len_xy) {
+void init(double *input1) {
+    double* tmp=malloc((rank_load_size * rank_load_size) * sizeof(double));
     srand(time(NULL));
-    for (int i = 0; i < in1_len_xy; i++) {
-        input1[i] = (double) rand();
+    for (int i = 0; i < rank_load_size * rank_load_size; i++) {
+        tmp[i] = (double) rand();
     }
+
+    MPI_Gather(tmp,rank_load_size * rank_load_size,MPI_DOUBLE,input1,rank_load_size * rank_load_size,0,MPI_COMM_WORLD);
+
+    free(tmp);
 }
 
 void matmulikj(const double *input1, const double *input2, double *output) {
@@ -197,20 +203,30 @@ int main(int argc, char *argv[]) {
     SIZE = atoi(l);
     unsigned long funcnum = atoll(f);
 
-    //printf("%lld",SIZE);
-    //printf("%lld",loopsize);
     double *input1 = NULL;
     double *input2 = NULL;
     double *output = NULL;
+
+    if(rank==size-1){
+        rank_load_size=SIZE/size+SIZE%size;//last rank fills up uneven load
+    }
+    else{
+        rank_load_size=SIZE/size;//all ranks share load
+    }
 
     if(rank == 0){
         input1 = malloc((SIZE * SIZE) * sizeof(double));
         input2 = malloc((SIZE * SIZE) * sizeof(double));
         output = malloc((SIZE * SIZE) * sizeof(double));
-
-        init(input1, SIZE * SIZE);
-        init(input2, SIZE * SIZE);
     }
+    else{
+        input1 = malloc((rank_load_size * rank_load_size) * sizeof(double));
+        input2 = malloc((rank_load_size * rank_load_size) * sizeof(double));
+        output = malloc((rank_load_size * rank_load_size) * sizeof(double));
+    }
+
+    init(input1);
+    init(input2);
 
     double res = 0;
     long long ops = 0;
