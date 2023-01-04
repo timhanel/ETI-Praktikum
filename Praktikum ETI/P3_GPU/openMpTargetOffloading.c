@@ -38,26 +38,29 @@ void matmuljki(const double *input1, const double *input2, double *output){
 }
 int main(int argc, char *argv[]) {
 
-    int n=500;
     double *a, *b, *c;
-    a = (double*)malloc(n*sizeof(double));
-    b = (double*)malloc(n*sizeof(double));
-    c = (double*)malloc(n*sizeof(double));
+    a = (double*)malloc(SIZE*sizeof(double));
+    b = (double*)malloc(SIZE*sizeof(double));
+    c = (double*)malloc(SIZE*sizeof(double));
     initInput(a,b);
     initOutput(c);
 
 
-    #pragma omp target data map(tofrom:a[:SIZE]) map(tofrom: b[:SIZE]) map(tofrom: c[:SIZE]){
-    #pragma omp target teams num_teams(3)
-    {
-                matmuljki(a,b,c);
-    }
-    }
+    #pragma omp target data map(tofrom:a[:SIZE]) map(tofrom: b[:SIZE]) map(tofrom: c[:SIZE])
+        #pragma omp target teams num_teams(3)
+        {
+                    matmuljki(a,b,c);
+        }
+
     for (int j = 0; j < SIZE; j++)  {             //jki
-                for (int i = 0; i < SIZE; i++){  
+                for (int i = 0; i < SIZE; i++){
                     printf("%f",c[j*SIZE+i]);
                 }
                 printf("\n");
     }
 
-    }
+    free(a);
+    free(b);
+    free(c);
+
+}
