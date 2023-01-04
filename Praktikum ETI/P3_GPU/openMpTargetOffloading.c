@@ -39,9 +39,9 @@ void matmuljki(const double *input1, const double *input2, double *output){
 int main(int argc, char *argv[]) {
 
     double *a, *b, *c;
-    a = (double*)malloc(SIZE*sizeof(double));
-    b = (double*)malloc(SIZE*sizeof(double));
-    c = (double*)malloc(SIZE*sizeof(double));
+    a = (double*)malloc(SIZE*SIZE*sizeof(double));
+    b = (double*)malloc(SIZE*SIZE*sizeof(double));
+    c = (double*)malloc(SIZE*SIZE*sizeof(double));
     initInput(a,b);
     initOutput(c);
 
