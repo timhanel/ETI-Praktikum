@@ -8,11 +8,11 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <string.h>
-#define SIZE 3
-void initOutput(double * input3){
+#define SIZE 4096
+void initOutput(double * input){
     for(int i=0;i<SIZE;i++){
         for(int j=0;j<SIZE;j++){
-                input1[i*SIZE+j]=-1
+                input[i*SIZE+j]=0;
         }
     }
 }
