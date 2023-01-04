@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     initOutput(c);
 
 
-    #pragma omp target data map(fromto:a[:SIZE]) map(fromto: b[:SIZE]) map(fromto: c[:SIZE]){
+    #pragma omp target data map(tofrom:a[:SIZE]) map(tofrom: b[:SIZE]) map(tofrom: c[:SIZE]){
     #pragma omp target teams num_teams(3)
     {
                 matmuljki(a,b,c);
