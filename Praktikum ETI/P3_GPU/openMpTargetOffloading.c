@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <string.h>
-#define SIZE 4096
+#define SIZE 3
 void initOutput(double * input){
     for(int i=0;i<SIZE;i++){
         for(int j=0;j<SIZE;j++){
@@ -26,7 +26,7 @@ void initInput(double * input1,double * input2){
     }
 }
 void matmuljki(const double *input1, const double *input2, double *output){
-    #pragma omp target teams distribute parallel for
+    //#pragma omp target teams distribute parallel for
     for (int j = 0; j < SIZE; j++)  {             //jki
         for (int k = 0; k < SIZE; k++) {
             for (int i = 0; i < SIZE; i++){  
@@ -34,7 +34,6 @@ void matmuljki(const double *input1, const double *input2, double *output){
             }
         }
     }
-
 }
 int main(int argc, char *argv[]) {
 
@@ -47,9 +46,16 @@ int main(int argc, char *argv[]) {
 
 
     #pragma omp target data map(tofrom:a[:SIZE]) map(tofrom: b[:SIZE]) map(tofrom: c[:SIZE])
-        #pragma omp target teams num_teams(3)
+        #pragma omp target teams distribute parrallel for
         {
-                    matmuljki(a,b,c);
+            //#pragma omp target teams distribute parallel for
+            for (int j = 0; j < SIZE; j++)  {             //jki
+                for (int k = 0; k < SIZE; k++) {
+                    for (int i = 0; i < SIZE; i++){
+                        c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
+                    }
+                }
+            }
         }
 
     for (int j = 0; j < SIZE; j++)  {             //jki
