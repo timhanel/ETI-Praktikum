@@ -45,13 +45,13 @@ void matmuljki(const double *input1, const double *input2, double *output){
     }
 
 }
-int verify(double * matrix,double *test){
+bool verify(double * matrix,double *test){
     for (int j = 0; j < SIZE; j++)  {             //jki
         for (int i = 0; i < SIZE; i++){
-            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return 0;
+            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return false;
         }
     }
-    return 1;
+    return true;
 }
 void getteam(){
         int team = omp_get_team_num();

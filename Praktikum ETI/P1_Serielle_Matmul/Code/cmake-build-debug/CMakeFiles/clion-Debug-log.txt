@@ -1,1 +1,1 @@
-CMakeLists.txt not found in C:\Users\Benjamin-Elias Probs\CLionProjects\ETI-Praktikum\Praktikum ETI\P1_Serielle_Matmul\Code Select CMakeLists.txt
+CMakeLists.txt not found in /home/benjamin-elias/CLionProjects/ETI-Praktikum/Praktikum ETI/P1_Serielle_Matmul/Code Select CMakeLists.txt
