@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 
     matmuljki(a,b,test);
     
-    //initOutput(c);
+    initOutput(c);
     printf("\n");
     #pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {

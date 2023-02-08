@@ -2,7 +2,7 @@ module load GCC/8.3.0
 
 ssh s7393169@taurus.hrsk.tu-dresden.de
 
-sshfs s7393169@taurus.hrsk.tu-dresden.de:/home/s7393169/task3_  /home/tim/Dokumente/GitHub/ETI-Praktikum/Praktikum\ ETI/P3_GPU/
+sshfs s7393169@taurus.hrsk.tu-dresden.de:/home/s7393169/task3_  /home/tim/Dokumente/GitHub/ETI-Praktikum/Praktikum\ ETI/P3_GPU/share
 
 srun --nodes=1 --tasks-per-node=1 --cpus-per-task=4 --gres=gpu:1 --comment=no_monitoring -t 02:00:00 -p ml --pty bash
 
@@ -10,7 +10,32 @@ module switch modenv/ml &&
 module load NVHPC && module load GCC/8.3.0
 
 nvc -O3 -mp=gpu openMPOffload.c -o offload && ./offload
+nvc -O3 -mp=gpu openMPOffload.c -o offload && ncu -o profile ./offload
 
 
 performance messurements using NVC: 
 https://docs.nvidia.com/nsight-compute/2021.2/NsightComputeCli/index.html#quick-start
+
+offiziell:
+7.8 TFLOPS
+
+sm__sass_thread_inst_executed_op_fp64_pred_on
+
+--section SpeedOfLight --metrics smsp__sass_thread_inst_executed_op_fp64_pred_on
+
+1.073.741.824*(1/0,00712)
+
+7,12 ms
+0.00712 s
+
+
+nvc -O3 -mp=gpu openMPOffload.c -o offload && ncu --section SpeedOfLight --section ComputeWorkloadAnalysis --metrics smsp__sass_thread_inst_executed_op_fp64_pred_on offload
+
+ncu --metric smsp__sass_thread_inst_executed_op_fp64_pred_on,sys__cycles_elapsed  offload -c 20
+
+https://forums.developer.nvidia.com/t/about-the-flops-in-ncu-report/215350/3
+gpc__cycles_elapsed.avg.per_second
+
+3840,5120,6400,7680,8960 
+
+zeit in s = (sm__cycles_active.min/sm__cycles_active.avg.per_second)/10^9
