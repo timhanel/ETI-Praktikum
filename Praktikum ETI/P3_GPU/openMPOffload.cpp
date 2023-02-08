@@ -10,7 +10,7 @@
 #include <string.h>
 #include <math.h>
 
-#define SIZE 1024
+#define SIZE 2048
 #define NUMTEAMS 64
 
 void initOutput(double *input) {
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 
     matmuljki(a, b, test);
 
-    initOutput(c);
+    //initOutput(c);
     printf("\n");
 #pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {
