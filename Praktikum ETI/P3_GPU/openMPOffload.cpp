@@ -10,7 +10,7 @@
 #include <string.h>
 #include <math.h>
 
-#define SIZE 2048
+#define SIZE 1024
 #define NUMTEAMS 64
 
 void initOutput(double *input) {
