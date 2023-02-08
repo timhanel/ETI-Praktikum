@@ -1,4 +1,3 @@
-#include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -59,7 +58,7 @@ int verify(double *matrix, double *test) {
     }
     return 1;
 }
-
+/*
 void getteam() {
     int team = omp_get_team_num();
     printf("Team: %d \n,", team);
@@ -69,8 +68,14 @@ void getthread() {
     int thread = omp_get_thread_num();
     printf("Thread: %d \n,", thread);
 }
+*/
+
+__global__ void mykernel(){
+    printf("Hello World\n");
+}
 
 int main(int argc, char *argv[]) {
+
 
     double *a, *b, *c, *test;
     a = (double *) malloc(SIZE * SIZE * sizeof(double));
@@ -84,16 +89,29 @@ int main(int argc, char *argv[]) {
 
     initOutput(c);
     printf("\n");
-#pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
+
+    for (int j = 0; j < SIZE; j++) {
+        for (int i = 0; i < SIZE; i++) {
+            //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
+            //double tmp = 0;
+            for (int k = 0; k < SIZE; k++) {
+                c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
+            }
+            //c[j*SIZE+i]=tmp;
+        }
+    }
+
+/*#pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {
 #pragma omp target teams num_teams(NUMTEAMS)
-        {
-            int team = omp_get_team_num();
+        {*/
+            /*int team = omp_get_team_num();
             int init = team * SIZE / NUMTEAMS;
             int stop = init + SIZE / NUMTEAMS;
-            for (int j = init; j < stop; j++) {
+            for (int j = init; j < stop; j++) {*/
 
-#pragma omp parallel for
+//#pragma omp parallel for
+/*
                 for (int i = 0; i < SIZE; i++) {
                     //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
                     //double tmp = 0;
@@ -101,11 +119,15 @@ int main(int argc, char *argv[]) {
                         c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
                     }
                     //c[j*SIZE+i]=tmp;
-                }
+                }*/
+                /*
             }
-        }
+        }*/
+    //}
+    if (verify(c, test)) {
+        printf("Verification success");
+        mykernel<<<1,1>>>();
     }
-    if (verify(c, test)) { printf("Verification success"); }
     else { printf("Verification Failed check thread and team Sizes"); };
 
     free(a);
