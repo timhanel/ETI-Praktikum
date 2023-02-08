@@ -14,7 +14,7 @@
 void initOutput(double * input){
     for(int i=0;i<SIZE;i++){
         for(int j=0;j<SIZE;j++){
-                input[i*SIZE+j]=0;
+            input[i*SIZE+j]=0;
         }
     }
 }
@@ -22,8 +22,8 @@ void initInput(double * input1,double * input2){
     srand( time(NULL) );
     for(int i=0;i<SIZE;i++){
         for(int j=0;j<SIZE;j++){
-                input1[i*SIZE+j]=(double)rand();
-                input2[i*SIZE+j]=(double)rand();
+            input1[i*SIZE+j]=(double)rand();
+            input2[i*SIZE+j]=(double)rand();
         }
     }
 }
@@ -38,8 +38,8 @@ void printM(double * matrix){
 void matmuljki(const double *input1, const double *input2, double *output){
     for (int j = 0; j < SIZE; j++)  {             //jki
         for (int k = 0; k < SIZE; k++) {
-            for (int i = 0; i < SIZE; i++){  
-                    output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
+            for (int i = 0; i < SIZE; i++){
+                output[j * SIZE + i] += input1[j * SIZE + k] * input2[k * SIZE + i];
             }
         }
     }
@@ -54,12 +54,12 @@ int verify(double * matrix,double *test){
     return 1;
 }
 void getteam(){
-        int team = omp_get_team_num();
-        printf("Team: %d \n,",team);
+    int team = omp_get_team_num();
+    printf("Team: %d \n,",team);
 }
 void getthread(){
-        int thread = omp_get_thread_num();
-        printf("Thread: %d \n,",thread);
+    int thread = omp_get_thread_num();
+    printf("Thread: %d \n,",thread);
 }
 int main(int argc, char *argv[]) {
 
@@ -72,29 +72,29 @@ int main(int argc, char *argv[]) {
     initOutput(test);
 
     matmuljki(a,b,test);
-    
+
     initOutput(c);
     printf("\n");
-    #pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
+#pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {
-                    #pragma omp target teams num_teams(NUMTEAMS)
-                    {
-                    int team=omp_get_team_num();
-                    int init=team*SIZE/NUMTEAMS;
-                    int stop=init+SIZE/NUMTEAMS;
-                    for (int j = init; j < stop; j++)  {  
+#pragma omp target teams num_teams(NUMTEAMS)
+        {
+            int team=omp_get_team_num();
+            int init=team*SIZE/NUMTEAMS;
+            int stop=init+SIZE/NUMTEAMS;
+            for (int j = init; j < stop; j++)  {
 
-                                #pragma omp parallel for
-                                for (int i = 0; i < SIZE; i++) {
-                                    //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
-                                    //double tmp = 0;
-                                    for (int k = 0; k < SIZE; k++){  
-                                        c[j*SIZE+i]+= a[j * SIZE + k] * b[k * SIZE + i];
-                                    }
-                                    //c[j*SIZE+i]=tmp;
-                                }
-                        }
+#pragma omp parallel for
+                for (int i = 0; i < SIZE; i++) {
+                    //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
+                    //double tmp = 0;
+                    for (int k = 0; k < SIZE; k++){
+                        c[j*SIZE+i]+= a[j * SIZE + k] * b[k * SIZE + i];
                     }
+                    //c[j*SIZE+i]=tmp;
+                }
+            }
+        }
     }
     if(verify(c,test)){printf("Verification success");}
     else{printf("Verification Failed check thread and team Sizes");};
