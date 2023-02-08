@@ -45,13 +45,13 @@ void matmuljki(const double *input1, const double *input2, double *output){
     }
 
 }
-bool verify(double * matrix,double *test){
+int verify(double * matrix,double *test){
     for (int j = 0; j < SIZE; j++)  {             //jki
         for (int i = 0; i < SIZE; i++){
-            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return false;
+            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return 0;
         }
     }
-    return true;
+    return 1;
 }
 void getteam(){
         int team = omp_get_team_num();
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 
     matmuljki(a,b,test);
     
-    //initOutput(c);
+    initOutput(c);
     printf("\n");
     #pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {

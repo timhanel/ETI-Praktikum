@@ -1,0 +1,19 @@
+Size 7680
+==PROF== Connected to process 40021 (/home/h9/s7393169/task3_/offload)
+==PROF== Profiling "nvkernel_main_F1L83_1" - 1: 0%....50%....100% - 4 passes
+==PROF== Disconnected from process 40021
+[40021] offload@127.0.0.1
+  nvkernel_main_F1L83_1, 2023-Feb-07 16:27:02, Context 1, Stream 13
+    Section: Command line profiler metrics
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    sm__cycles_active.avg                                                            cycle               6.678.058.008,11
+    sm__cycles_active.max                                                            cycle                  6.860.446.584
+    sm__cycles_active.min                                                            cycle                  6.568.039.010
+    sm__cycles_active.sum                                                            cycle                534.244.640.649
+    sm__sass_thread_inst_executed_op_dfma_pred_on.avg                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.max                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.min                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.sum                                 inst                452.984.832.000
+    sm__cycles_active.avg.per_second                                         cycle/nsecond                           1,26
+    ---------------------------------------------------------------------- --------------- ------------------------------
+

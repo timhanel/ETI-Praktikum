@@ -45,13 +45,13 @@ void matmuljki(const double *input1, const double *input2, double *output){
     }
 
 }
-bool verify(double * matrix,double *test){
+int verify(double * matrix,double *test){
     for (int j = 0; j < SIZE; j++)  {             //jki
         for (int i = 0; i < SIZE; i++){
-            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return false;
+            if(matrix[j*SIZE+i]!=test[j*SIZE+i])return 0;
         }
     }
-    return true;
+    return 1;
 }
 void getteam(){
         int team = omp_get_team_num();
@@ -67,14 +67,14 @@ int main(int argc, char *argv[]) {
     a = (double*)malloc(SIZE*SIZE*sizeof(double));
     b = (double*)malloc(SIZE*SIZE*sizeof(double));
     c = (double*)malloc(SIZE*SIZE*sizeof(double));
-    test = (double*)malloc(SIZE*SIZE*sizeof(double));
+    /*test = (double*)malloc(SIZE*SIZE*sizeof(double));
     initInput(a,b);
     initOutput(test);
 
     matmuljki(a,b,test);
-    
+    */
     //initOutput(c);
-    printf("\n");
+    //printf("\n");
     #pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
     {
                     #pragma omp target teams num_teams(NUMTEAMS)
@@ -96,9 +96,9 @@ int main(int argc, char *argv[]) {
                         }
                     }
     }
-    if(verify(c,test)){printf("Verification success");}
+    /*if(verify(c,test)){printf("Verification success");}
     else{printf("Verification Failed check thread and team Sizes");};
-
+    */
     free(a);
     free(b);
     free(c);
