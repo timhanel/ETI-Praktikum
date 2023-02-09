@@ -74,7 +74,7 @@ void getthread() {
 */
 
 __global__ void gpu_test(){
-    printf("GPU is on!\n");
+    if(!threadIdx.x)printf("GPU is on!\n");
 }
 
 __global__ void cuda_matmulkji(double *a, double *b, double *c){
