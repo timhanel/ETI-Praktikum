@@ -43,5 +43,5 @@ zeit in s = (sm__cycles_active.min/sm__cycles_active.avg.per_second)/10^9
 CUDA
 srun --nodes=1 --tasks-per-node=1 --cpus-per-task=1 --gres=gpu:1 --comment=no_monitoring -t 02:00:00 -p ml --pty bash
 
-nvcc -O3 OffloadCUDA.cu -o offload -Xcompiler --std=c++11 && ncu --section SpeedOfLight --section ComputeWorkloadAnalysis --metrics smsp__sass_thre
-ad_inst_executed_op_fp64_pred_on offload
+nvcc -O3 OffloadCUDA.cu -o offload -Xcompiler --std=c++11 && ncu --section SpeedOfLight --section ComputeWorkloadAnalysis --metrics smsp__sass_thread_inst_executed_op_fp64_pred_on offload
+
