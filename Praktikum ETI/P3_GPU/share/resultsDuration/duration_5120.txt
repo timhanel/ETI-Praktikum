@@ -1,0 +1,19 @@
+Size 5120
+==PROF== Connected to process 97928 (/home/h9/s7393169/task3_/offload)
+==PROF== Profiling "nvkernel_main_F1L83_1" - 1: 0%....50%....100% - 4 passes
+==PROF== Disconnected from process 97928
+[97928] offload@127.0.0.1
+  nvkernel_main_F1L83_1, 2023-Feb-09 22:11:33, Context 1, Stream 13
+    Section: Command line profiler metrics
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    sm__cycles_active.avg                                                            cycle               1.788.913.491,79
+    sm__cycles_active.max                                                            cycle                  1.856.738.404
+    sm__cycles_active.min                                                            cycle                  1.742.272.201
+    sm__cycles_active.sum                                                            cycle                143.113.079.343
+    sm__sass_thread_inst_executed_op_dfma_pred_on.avg                                 inst                  1.677.721.600
+    sm__sass_thread_inst_executed_op_dfma_pred_on.max                                 inst                  1.677.721.600
+    sm__sass_thread_inst_executed_op_dfma_pred_on.min                                 inst                  1.677.721.600
+    sm__sass_thread_inst_executed_op_dfma_pred_on.sum                                 inst                134.217.728.000
+    sm__cycles_active.avg.per_second                                         cycle/nsecond                           1,24
+    ---------------------------------------------------------------------- --------------- ------------------------------
+

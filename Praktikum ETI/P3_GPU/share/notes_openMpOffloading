@@ -1,0 +1,12 @@
+module load GCC/8.3.0
+
+ssh s7393169@taurus.hrsk.tu-dresden.de
+
+sshfs s7393169@taurus.hrsk.tu-dresden.de:/home/s7393169/task3_  /home/tim/Dokumente/GitHub/ETI-Praktikum/Praktikum\ ETI/P3_GPU/
+
+srun --nodes=1 --tasks-per-node=1 --cpus-per-task=4 --gres=gpu:1 --comment=no_monitoring -t 02:00:00 -p ml --pty bash
+
+module switch modenv/ml &&
+module load NVHPC && module load GCC/8.3.0
+
+nvc -O3 -mp=gpu openMPOffload.c -o offload && ./offload

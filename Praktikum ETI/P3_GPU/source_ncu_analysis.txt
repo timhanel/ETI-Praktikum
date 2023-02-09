@@ -1,0 +1,64 @@
+    Section: Compute Workload Analysis
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Executed Ipc Active                                                         inst/cycle                           0,86
+    Executed Ipc Elapsed                                                        inst/cycle                           0,62
+    Issue Slots Busy                                                                     %                          21,47
+    Issued Ipc Active                                                           inst/cycle                           0,86
+    SM Busy                                                                              %                          21,47
+    ---------------------------------------------------------------------- --------------- ------------------------------                                                                            
+
+    Section: Memory Workload Analysis
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Memory Throughput                                                         Gbyte/second                         318,16
+    Mem Busy                                                                             %                          44,75
+    Max Bandwidth                                                                        %                          44,73
+    L1/TEX Hit Rate                                                                      %                          72,50
+    L2 Hit Rate                                                                          %                          75,83
+    Mem Pipes Busy                                                                       %                          22,65
+
+    Section: Launch Statistics
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Block Size                                                                                                         32
+    Function Cache Configuration                                                                  cudaFuncCachePreferNone
+    Grid Size                                                                                                       3.840
+    Registers Per Thread                                                   register/thread                             29
+    Shared Memory Configuration Size                                                  byte                              0
+    Driver Shared Memory Per Block                                              byte/block                              0
+    Dynamic Shared Memory Per Block                                             byte/block                              0
+    Static Shared Memory Per Block                                              byte/block                              0
+    Threads                                                                         thread                        122.880
+    Waves Per SM                                                                                                     1,50
+    
+    
+     Section: Compute Workload Analysis
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Executed Ipc Active                                                         inst/cycle                           0,69
+    Executed Ipc Elapsed                                                        inst/cycle                           0,64
+    Issue Slots Busy                                                                     %                          18,65
+    Issued Ipc Active                                                           inst/cycle                           0,75
+    SM Busy                                                                              %                          18,65
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Section: Memory Workload Analysis
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Memory Throughput                                                         Gbyte/second                          29,26
+    Mem Busy                                                                             %                          68,08
+    Max Bandwidth                                                                        %                          46,71
+    L1/TEX Hit Rate                                                                      %                          67,89
+    L2 Hit Rate                                                                          %                          83,86
+    Mem Pipes Busy                                                                       %                          27,00
+        ---------------------------------------------------------------------- --------------- ------------------------------
+
+    Section: Launch Statistics
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    Block Size                                                                                                        896
+    Function Cache Configuration                                                                  cudaFuncCachePreferNone
+    Grid Size                                                                                                          80
+    Registers Per Thread                                                   register/thread                             72
+    Shared Memory Configuration Size                                                 Kbyte                          16,38
+    Driver Shared Memory Per Block                                              byte/block                              0
+    Dynamic Shared Memory Per Block                                            Kbyte/block                           8,85
+    Static Shared Memory Per Block                                              byte/block                              0
+    Threads                                                                         thread                         71.680
+    Waves Per SM                                                                                                        1
+    ---------------------------------------------------------------------- --------------- ------------------------------
+

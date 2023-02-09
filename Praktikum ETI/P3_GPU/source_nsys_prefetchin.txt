@@ -1,0 +1,37 @@
+CUDA API Statistics:
+
+ Time(%)  Total Time (ns)  Num Calls     Average      Minimum     Maximum       StdDev              Name         
+ -------  ---------------  ---------  -------------  ---------  -----------  -------------  ---------------------
+    71,0      440.409.536          3  146.803.178,0     44.623  440.314.164  254.187.969,0  cudaMallocManaged    
+    24,0      151.079.427          2   75.539.713,0      8.685  151.070.742  106.817.004,0  cudaDeviceSynchronize
+     3,0       20.800.830          4    5.200.207,0  3.155.398    5.994.466    1.365.570,0  cudaMemPrefetchAsync 
+     1,0        6.537.025          3    2.179.008,0  1.995.030    2.342.342      174.573,0  cudaFree             
+     0,0           59.510          1       59.510,0     59.510       59.510            0,0  cudaLaunchKernel     
+
+
+
+CUDA Kernel Statistics:
+
+ Time(%)  Total Time (ns)  Instances     Average       Minimum      Maximum    StdDev                    Name                   
+ -------  ---------------  ---------  -------------  -----------  -----------  ------  -----------------------------------------
+   100,0      151.066.751          1  151.066.751,0  151.066.751  151.066.751     0,0  cuda_matmulkji(double*, double*, double*)
+   
+ 
+ CUDA API Statistics:
+ Time(%)  Total Time (ns)  Num Calls     Average      Minimum     Maximum       StdDev              Name         
+ -------  ---------------  ---------  -------------  ---------  -----------  -------------  ---------------------
+    65,0      430.680.096          3  143.560.032,0     44.939  430.583.518  248.569.630,0  cudaMallocManaged    
+    33,0      223.338.654          2  111.669.327,0      8.732  223.329.922  157.911.927,0  cudaDeviceSynchronize
+     1,0        7.129.961          3    2.376.653,0  2.304.612    2.456.302       76.130,0  cudaFree             
+     0,0           65.878          1       65.878,0     65.878       65.878            0,0  cudaLaunchKernel     
+
+
+
+CUDA Kernel Statistics:
+
+ Time(%)  Total Time (ns)  Instances     Average       Minimum      Maximum    StdDev                    Name                   
+ -------  ---------------  ---------  -------------  -----------  -----------  ------  -----------------------------------------
+   100,0      223.309.438          1  223.309.438,0  223.309.438  223.309.438     0,0  cuda_matmulkji(double*, double*, double*)
+
+
+

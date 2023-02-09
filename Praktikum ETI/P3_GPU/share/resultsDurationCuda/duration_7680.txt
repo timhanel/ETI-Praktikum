@@ -1,0 +1,20 @@
+Size 7680
+==PROF== Connected to process 98318 (/home/h9/s7393169/task3_/cuda)
+==PROF== Profiling "cuda_matmulkji" - 1: 0%....50%....100% - 4 passes
+==PROF== Disconnected from process 98318
+
+[98318] cuda@127.0.0.1
+  cuda_matmulkji(double*, double*, double*), 2023-Feb-09 22:12:48, Context 1, Stream 7
+    Section: Command line profiler metrics
+    ---------------------------------------------------------------------- --------------- ------------------------------
+    sm__cycles_active.avg                                                            cycle               3.359.664.334,40
+    sm__cycles_active.max                                                            cycle                  3.403.884.384
+    sm__cycles_active.min                                                            cycle                  3.295.805.057
+    sm__cycles_active.sum                                                            cycle                268.773.146.752
+    sm__sass_thread_inst_executed_op_dfma_pred_on.avg                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.max                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.min                                 inst                  5.662.310.400
+    sm__sass_thread_inst_executed_op_dfma_pred_on.sum                                 inst                452.984.832.000
+    sm__cycles_active.avg.per_second                                         cycle/nsecond                           1,27
+    ---------------------------------------------------------------------- --------------- ------------------------------
+

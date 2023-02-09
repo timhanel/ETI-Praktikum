@@ -1,0 +1,7 @@
+Size 7680
+==PROF== Connected to process 98039 (/home/h9/s7393169/task3_/offload)
+==PROF== Profiling "nvkernel_main_F1L83_1" - 1: 
+==ERROR== Failed to profile kernel "nvkernel_main_F1L83_1" in process 98039
+==ERROR== An error occurred while trying to profile.
+==WARNING== No kernels were profiled.
+==WARNING== Profiling kernels launched by child processes requires the --target-processes all option.
