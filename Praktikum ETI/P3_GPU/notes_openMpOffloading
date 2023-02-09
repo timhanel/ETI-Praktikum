@@ -39,3 +39,7 @@ gpc__cycles_elapsed.avg.per_second
 3840,5120,6400,7680,8960 
 
 zeit in s = (sm__cycles_active.min/sm__cycles_active.avg.per_second)/10^9
+
+CUDA
+nvcc -O3 OffloadCUDA.cu -o offload -Xcompiler --std=c++11 && ncu --section SpeedOfLight --section ComputeWorkloadAnalysis --metrics smsp__sass_thre
+ad_inst_executed_op_fp64_pred_on offload

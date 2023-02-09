@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <string.h>
 #include <math.h>
+#include <cuda_runtime.h>
 
 #define SIZE 1024
 #define NUMTEAMS 64
@@ -77,7 +78,6 @@ __global__ void gpu_test(){
 }
 
 __global__ void cuda_matmulkji(double *a, double *b, double *c){
-    long count = threadIdx.x + blockIdx.x * blockDim.x;
     long k = blockIdx.x;
     long j = blockIdx.y;
     long i = threadIdx.x*threadIdx.y+threadIdx.x;
@@ -113,13 +113,12 @@ int main(int argc, char *argv[]) {
     //the process will take exactly 6 gpu context switches/iterations to finish
 
     //use all 160 available thread blocks and the full warp size of 32
-    dim2 block(SIZE,SIZE);
     int deviceId;
     cudaGetDevice(&deviceId);
     cudaMemPrefetchAsynch(a, SIZE*SIZE*sizeof(double),deviceId);
     cudaMemPrefetchAsynch(b, SIZE*SIZE*sizeof(double),deviceId);
     cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),deviceId);
-    cuda_matmulkji<<<WARPSIZE*(V100CORES/WARPSIZE),block>>>(a,b,c);
+    cuda_matmulkji<<<WARPSIZE*(V100CORES/WARPSIZE),SIZE*SIZE>>>(a,b,c);
     cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),cudaCpuDeviceId);
 
     cudaDeviceSynchronize();
