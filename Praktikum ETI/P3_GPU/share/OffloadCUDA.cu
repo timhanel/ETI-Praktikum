@@ -11,6 +11,8 @@
 
 #define SIZE 1024
 #define NUMTEAMS 64
+#define V100CORES 5120
+#define WARPSIZE 32
 
 void initOutput(double *input) {
     for (int i = 0; i < SIZE; i++) {
@@ -70,17 +72,32 @@ void getthread() {
 }
 */
 
-__global__ void mykernel(){
-    printf("Hello World\n");
+__global__ void gpu_test(){
+    printf("GPU is on!\n");
+}
+
+__global__ void cuda_matmulkji(double *a, double *b, double *c){
+    long count = threadIdx.x + blockIdx.x * blockDim.x;
+    long k = blockIdx.x;
+    long j = blockIdx.y;
+    long i = threadIdx.x*threadIdx.y+threadIdx.x;
+
+    if(k < SIZE && j < SIZE && i < SIZE){
+        for(;i < SIZE;i += WARPSIZE){
+            c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
+        }
+    }
 }
 
 int main(int argc, char *argv[]) {
 
+    gpu_test<<<1,1>>>();
 
     double *a, *b, *c, *test;
-    a = (double *) malloc(SIZE * SIZE * sizeof(double));
-    b = (double *) malloc(SIZE * SIZE * sizeof(double));
-    c = (double *) malloc(SIZE * SIZE * sizeof(double));
+    cudaMallocManaged(&a,SIZE*SIZE*sizeof(double));
+    cudaMallocManaged(&b,SIZE*SIZE*sizeof(double));
+    cudaMallocManaged(&c,SIZE*SIZE*sizeof(double));
+
     test = (double *) malloc(SIZE * SIZE * sizeof(double));
     initInput(a, b);
     initOutput(test);
@@ -90,49 +107,32 @@ int main(int argc, char *argv[]) {
     initOutput(c);
     printf("\n");
 
-    for (int j = 0; j < SIZE; j++) {
-        for (int i = 0; i < SIZE; i++) {
-            //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
-            //double tmp = 0;
-            for (int k = 0; k < SIZE; k++) {
-                c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
-            }
-            //c[j*SIZE+i]=tmp;
-        }
-    }
+    //a warp/thread block has 32 threads and an NVIDA V100 has 5120 cores
+    //this means we have 160 thread blocks so "micro processors" with multiple cores each
+    //those 160 thread blocks match memory alignment with SIZE/160 for example 1024/160 = 6
+    //the process will take exactly 6 gpu context switches/iterations to finish
 
-/*#pragma omp target data map(to:a[:SIZE*SIZE]) map(to: b[:SIZE*SIZE]) map(from: c[:SIZE*SIZE])
-    {
-#pragma omp target teams num_teams(NUMTEAMS)
-        {*/
-            /*int team = omp_get_team_num();
-            int init = team * SIZE / NUMTEAMS;
-            int stop = init + SIZE / NUMTEAMS;
-            for (int j = init; j < stop; j++) {*/
+    //use all 160 available thread blocks and the full warp size of 32
+    dim2 block(SIZE,SIZE);
+    int deviceId;
+    cudaGetDevice(&deviceId);
+    cudaMemPrefetchAsynch(a, SIZE*SIZE*sizeof(double),deviceId);
+    cudaMemPrefetchAsynch(b, SIZE*SIZE*sizeof(double),deviceId);
+    cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),deviceId);
+    cuda_matmulkji<<<WARPSIZE*(V100CORES/WARPSIZE),block>>>(a,b,c);
+    cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),cudaCpuDeviceId);
 
-//#pragma omp parallel for
-/*
-                for (int i = 0; i < SIZE; i++) {
-                    //printf("Team: %d , Thread: %d ,Index: %d \n,",omp_get_team_num(),omp_get_thread_num(),i);
-                    //double tmp = 0;
-                    for (int k = 0; k < SIZE; k++) {
-                        c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
-                    }
-                    //c[j*SIZE+i]=tmp;
-                }*/
-                /*
-            }
-        }*/
-    //}
+    cudaDeviceSynchronize();
+
     if (verify(c, test)) {
         printf("Verification success");
-        mykernel<<<1,1>>>();
     }
     else { printf("Verification Failed check thread and team Sizes"); };
 
-    free(a);
-    free(b);
-    free(c);
+    cudaFree(a);
+    cudaFree(b);
+    cudaFree(c);
     free(test);
 
+    return 0;
 }
