@@ -115,11 +115,11 @@ int main(int argc, char *argv[]) {
     //use all 160 available thread blocks and the full warp size of 32
     int deviceId;
     cudaGetDevice(&deviceId);
-    cudaMemPrefetchAsynch(a, SIZE*SIZE*sizeof(double),deviceId);
-    cudaMemPrefetchAsynch(b, SIZE*SIZE*sizeof(double),deviceId);
-    cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),deviceId);
+    cudaMemPrefetchAsync(a, SIZE*SIZE*sizeof(double),deviceId);
+    cudaMemPrefetchAsync(b, SIZE*SIZE*sizeof(double),deviceId);
+    cudaMemPrefetchAsync(c, SIZE*SIZE*sizeof(double),deviceId);
     cuda_matmulkji<<<WARPSIZE*(V100CORES/WARPSIZE),SIZE*SIZE>>>(a,b,c);
-    cudaMemPrefetchAsynch(c, SIZE*SIZE*sizeof(double),cudaCpuDeviceId);
+    cudaMemPrefetchAsync(c, SIZE*SIZE*sizeof(double),cudaCpuDeviceId);
 
     cudaDeviceSynchronize();
 
