@@ -10,7 +10,7 @@
 #include <math.h>
 #include <cuda_runtime.h>
 
-#define SIZE 1024
+#define SIZE 8192
 #define NUMTEAMS 64
 #define V100CORES 5120
 #define WARPSIZE 32
@@ -80,10 +80,9 @@ __global__ void gpu_test(){
 __global__ void cuda_matmulkji(double *a, double *b, double *c){
     long k = blockIdx.x;
     long j = blockIdx.y;
-    long i = threadIdx.x*threadIdx.y+threadIdx.x;
 
-    if(k < SIZE && j < SIZE && i < SIZE){
-        for(;i < SIZE;i += WARPSIZE){
+    if(k < SIZE && j < SIZE){
+        for(long i = threadIdx.x;i < SIZE;i += WARPSIZE){
             c[j * SIZE + i] += a[j * SIZE + k] * b[k * SIZE + i];
         }
     }
